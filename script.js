@@ -10,10 +10,12 @@ var data = [
     }
 ]
 
-
-document.getElementById('begin').addEventListener('click', function () {
+//Clear out the welcome screen
+var beginBtn = document.getElementById('begin');
+beginBtn.addEventListener('click', function () {
     document.getElementById('welcome').setAttribute('style', 'display: none');
     document.getElementById('begin').setAttribute('style', 'display: none');
+    //Kickoff the process
     populateQandA(0);
     
 });
@@ -28,13 +30,16 @@ function populateQandA(idx) {
 }
 
 function isAnswerCorrect(idx) {
-    document.getElementById("answersList").addEventListener("click", function (event) {
+    console.log("isAnswerCorrect idx is", idx);
+    var answersList = document.getElementById("answersList");
+    answersList.addEventListener("click", function (event) {
         event.preventDefault();
         if (data[idx].ans[event.target.value].isCorrect === true) {
             alert('Correct!');
         } else {
             alert('WRONG!');
         }
+        
         populateQandA(idx+1);
 
     });
