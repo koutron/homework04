@@ -4,12 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles.css">
     <title>Code Quiz</title>
 </head>
 
 <body>
+    <h3 id="timer"></h3>
     <h1 id="welcome">Welcome to Kouros's Coding Quiz</h1>
-    <button id="begin">Begin</button>
+    <button id="beginBtn">Begin</button>
     <h1 id="question"></h1>
     <form>
         <ul id="answersList">
@@ -19,6 +21,22 @@
             <li><button id="a3" value="3"></button></li>
         </ul>
     </form>
+    <h1 id="gameover"></h1>
+
+    <form id="initialsForm">
+        <label for="initials">Initials:</label>
+        <input type="text" name="initials" id="initials" />
+        <button type="submit" id="submitBtn">Submit</button>
+    </form>
+
+    <table id="highscore">
+        <tr>
+            <th>High Score</th>
+            <th>Initials</th>
+        </tr>
+        <tr id="tableData">
+        </tr>
+    </table>
 </body>
 <script src="script.js"></script>
 

@@ -10,14 +10,28 @@ var data = [
     }
 ]
 
+//Timer Functionality.  Putting it in the global space as other functions will need to access the secondsLeft variable.
+var secondsLeft = 100;
+var timeEl = document.getElementById("timer");
+var timerInterval = setInterval(function () {
+    secondsLeft--;
+    timeEl.textContent = secondsLeft;
+
+    if (secondsLeft === 0) {
+        gameOver();
+    }
+
+}, 1000);
+
+
 //Clear out the welcome screen
-var beginBtn = document.getElementById('begin');
+var beginBtn = document.getElementById('beginBtn');
 beginBtn.addEventListener('click', function () {
     document.getElementById('welcome').setAttribute('style', 'display: none');
-    document.getElementById('begin').setAttribute('style', 'display: none');
+    document.getElementById('beginBtn').setAttribute('style', 'display: none');
     //Kickoff the process
     populateQandA(0);
-    
+
 });
 
 function populateQandA(idx) {
@@ -34,13 +48,70 @@ function isAnswerCorrect(idx) {
     var answersList = document.getElementById("answersList");
     answersList.addEventListener("click", function (event) {
         event.preventDefault();
-        if (data[idx].ans[event.target.value].isCorrect === true) {
-            alert('Correct!');
-        } else {
-            alert('WRONG!');
+        if (event.target.matches("button")) {
+            if (data[idx].ans[event.target.value].isCorrect === true) {
+                alert('Correct!');
+            } else {
+                alert('WRONG!');
+                secondsLeft = secondsLeft - 10;
+            }
         }
-        
-        populateQandA(idx+1);
-
+        if (idx == data.length - 1) {
+            gameOver();
+        } else {
+            populateQandA(idx + 1);
+        }
     });
 }
+
+function gameOver() {
+    clearInterval(timerInterval);
+    document.getElementById("question").setAttribute('style', 'display: none');
+    document.getElementById("answersList").setAttribute('style', 'display: none');
+    document.getElementById("timer").setAttribute('style', 'display: none');
+    document.getElementById("gameover").textContent = "Game Over!  your score is " + secondsLeft;
+    highScore();
+}
+
+function highScore() {
+    var initialsForm = document.getElementById("initialsForm");
+    var highScoreTable = document.getElementById("highscore");
+
+    initialsForm.setAttribute('style', 'display: block');
+
+    var locStorHighScore = localStorage.getItem("highScore");
+    var locStorInitials = localStorage.getItem("initials");
+
+    var tableDataHighScore = document.createElement("td");
+    tableDataHighScore.textContent = locStorHighScore;
+    document.getElementById("tableData").append(tableDataHighScore);
+
+    var tableDataInitials = document.createElement("td");
+    tableDataInitials.textContent = locStorInitials;
+    document.getElementById("tableData").append(tableDataInitials);
+
+
+
+    document.getElementById("submitBtn").addEventListener('click', function (event) {
+        event.preventDefault();
+        initialsForm.setAttribute('style', 'display: none');
+        highScoreTable.setAttribute('style', 'display: table');
+
+        var initials = document.getElementById("initials").value;
+        var tableData = document.getElementById("tableData");
+
+        var newRow = document.createElement("tr");
+        document.getElementById("highscore").append(newRow);
+        var tableDataHighScore = document.createElement("td");
+        tableDataHighScore.textContent = secondsLeft;
+        newRow.append(tableDataHighScore);
+        localStorage.setItem("highScore", secondsLeft);
+
+        var tableDataInitials = document.createElement("td");
+        tableDataInitials.textContent = initials;
+        newRow.append(tableDataInitials);
+        localStorage.setItem("initials", initials);
+    });
+}
+
+//highScore();
