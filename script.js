@@ -67,6 +67,7 @@ function highScore() {
     
     initialsForm.setAttribute('style', 'display: block');
     
+    //Retrieve info from local storage
     var locStorHighScore = localStorage.getItem("highScore");
     var locStorInitials = localStorage.getItem("initials");
     
@@ -112,6 +113,8 @@ answersList.addEventListener("click", function (event) {
       secondsLeft = secondsLeft - 10;
     }
   }
+
+  //Go to next question or end game
   if (currentQuestionIdx === data.length - 1) {
     gameOver();
   } else {
@@ -133,6 +136,7 @@ function result(isCorrect){
     }
 }
 
+//Clear out result after 1 second
 function clearResult(element){
     var secondsLeft = 1;
     var timerInterval = setInterval(function () {
